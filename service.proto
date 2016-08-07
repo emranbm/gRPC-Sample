@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pkg;
+
+service PersonService{
+    rpc getPersons(Filter) returns (Response);
+}
+
+message Filter{
+    repeated string names = 1;
+}
+
+message Response{
+    repeated Person persons = 1;
+}
+
+message Person{
+    string name = 1;
+    string surname = 2;
+    int32 age = 3;
+}
