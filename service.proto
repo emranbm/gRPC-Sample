@@ -3,7 +3,7 @@ syntax = "proto3";
 package servicePkg;
 
 service PersonFinder{
-    rpc getPersons(Filter) returns (Person);
+    rpc getPerson(Filter) returns (Person);
 }
 
 message Person{

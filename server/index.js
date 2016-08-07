@@ -1,4 +1,6 @@
 /**
+ * Server side
+ * 
  * @author Mr. Coder
  * 
  */
@@ -13,22 +15,33 @@ var jsonContent = fs.readFileSync('./noobDB.json');
 var persons = JSON.parse(jsonContent);
 
 // RPC function implementation.
-function serviceFunction(name, callback){
+function serviceFunction(input, callback){
+
+    var filter = input.request;
+
+    var name = filter.name;
+
+    var flag = false;
+
     persons.forEach((p) => {
         if(p.name == name){
             callback(null, p);
+            flag = true;
             return;
         }
     });
 
-    callback(null, false);
+    console.log(flag);
+
+    if (!flag)
+        callback(null, {name: 'not found!'});
 }
 
 // Make server
 var server = new grpc.Server();
 
 // Hey server! It's my service and its implementation! get it.
-server.addProtoService(servicePkg.PersonFinder.service, {getPersons: serviceFunction});
+server.addProtoService(servicePkg.PersonFinder.service, {getPerson: serviceFunction});
 
 // Make server to listen to port 7474
 server.bind('0.0.0.0:7474', grpc.ServerCredentials.createInsecure());
